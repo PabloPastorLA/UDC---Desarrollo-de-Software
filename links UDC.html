@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UDC Links</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f9fafb; color: #111827; margin: 20px; line-height: 1.6; }
+    h2, h3, h4 { margin-bottom: 10px; }
+    h2 { text-align: center; font-size: 28px; color: #1e3a8a; }
+    h3 { margin-top: 30px; color: #2563eb; }
+    h4 { margin-top: 20px; color: #374151; }
+    a { display: inline-block; margin: 5px 0; padding: 8px 12px; border-radius: 6px; text-decoration: none; background: #f3f4f6; color: #1f2937; transition: all 0.3s ease; }
+    a:hover { background: #2563eb; color: #fff; transform: translateX(4px); }
+    hr { margin: 30px 0; border: none; border-top: 2px solid #e5e7eb; }
+    .btn-darkmode { display: block; margin: 20px auto; padding: 10px 20px; border: none; border-radius: 8px; background: #2563eb; color: #fff; font-size: 14px; cursor: pointer; transition: background 0.3s ease; }
+    .btn-darkmode:hover { background: #1e40af; }
+    body.dark { background-color: #111827; color: #f3f4f6; }
+    body.dark a { background: #1f2937; color: #f9fafb; }
+    body.dark a:hover { background: #16a34a; color: #fff; }
+    body.dark h2 { color: #60a5fa; }
+    body.dark h3 { color: #93c5fd; }
+    #fechas { padding: 15px; background: #f3f4f6; border-radius: 8px; margin-top: 20px; }
+    #fechas ul { margin: 0; padding-left: 20px; }
+    .materia { margin-bottom: 20px; }
+    body.dark #fechas { background: #1f2937; }
+  </style>
+</head>
+<body class="dark">
+
+  <h2>EQUIVALENCIASSSSSS!!!!!</h2>
+  <button class="btn-darkmode" id="toggleDark">☀️ Modo Claro</button>
+  <hr>
+
+  <h3>Links UDC</h3>
+  <a target="_blank" href="https://campus.udc.edu.ar/my/">Campus</a>
+  <a target="_blank" href="https://autogestion.udc.edu.ar/udc/inicio_alumno">Autogestion (SIU Guaraní)</a>
+  <hr>
+
+  <h3>Fechas importantes por materia</h3>
+
+  <!-- Input para seleccionar el archivo UDC Fechas.txt -->
+  <input type="file" id="fileInput" accept=".txt">
+  <div id="fechas">📂 Seleccioná un archivo .txt</div>
+  <hr>
+
+  <!-- Ejemplo de estructura de materias y fechas -->
+  <!-- 
+    Formato del archivo UDC Fechas.txt:
+
+    - Cada materia debe empezar con el nombre entre corchetes:
+      [Nombre de la materia]
+
+    - Cada línea siguiente contiene un evento con su fecha al final en formato dd/mm:
+      Entrega TP1: 20/09
+      Parcial 1: 05/10
+
+    - Se pueden agregar comentarios usando # o // al inicio de la línea:
+      # Esto es un comentario que se ignora
+      // Otra nota que no se mostrará
+
+    - Ejemplo completo:
+
+      # Archivo de fechas de materias
+      [Mat aplicada II]
+      Entrega TP1: 20/09
+      Parcial 1: 05/10
+      TP2: 18/10
+
+      [Paradigmas de Programación (JAVA)]
+      TP1: 18/09
+      Parcial 1: 12/10
+  -->
+
+  <h3>Actuales</h3>
+
+  <h4>Mat aplicada II (PSEInt y planillas de cálculo):</h4>
+  <a target="_blank" href="https://campus.udc.edu.ar/course/view.php?id=1399">Presentación y avisos</a>
+  <a target="_blank" href="https://meet.google.com/xeo-hwca-dhx?pli=1&authuser=1">Clase virtual</a>
+
+  <h4>Paradigmas de Programación (JAVA):</h4>
+  <a target="_blank" href="https://campus.udc.edu.ar/course/view.php?id=1398&section=0">General</a>
+  <a target="_blank" href="https://campus.udc.edu.ar/mod/bigbluebuttonbn/view.php?id=63001">Reuniones sincrónicas</a>
+
+  <h4>Técnicas Avanzadas de Programación (pitón):</h4>
+  <a target="_blank" href="https://campus.udc.edu.ar/course/view.php?id=1395&section=0">Introducción</a>
+  <a target="_blank" href="https://campus.udc.edu.ar/mod/bigbluebuttonbn/view.php?id=62878">Reunion virtual</a>
+  <hr>
+
+  <h3>Pendientes:</h3>
+  <h4>Arq y SO:</h4>
+  <a target="_blank" href="https://campus.udc.edu.ar/course/view.php?id=1383&section=2">Introducción</a>
+  <a target="_blank" href="https://campus.udc.edu.ar/mod/bigbluebuttonbn/view.php?id=79996">Virtual</a>
+  <hr>
+
+  <script>
+    // Botón Dark Mode
+    const btn = document.getElementById("toggleDark");
+    btn.addEventListener("click", () => {
+      document.body.classList.toggle("dark");
+      btn.textContent = document.body.classList.contains("dark") 
+        ? "☀️ Modo Claro" 
+        : "🌙 Modo Oscuro";
+    });
+
+    // Leer archivo UDC Fechas.txt con secciones por materia y comentarios
+    document.getElementById("fileInput").addEventListener("change", function() {
+      const file = this.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const contenido = e.target.result;
+
+        const secciones = {};
+        let materiaActual = null;
+
+        const lineas = contenido.split(/\r?\n/);
+        lineas.forEach(linea => {
+          linea = linea.trim();
+          // Ignorar líneas vacías y comentarios
+          if (!linea || linea.startsWith("#") || linea.startsWith("//")) return;
+
+          // Detectar nueva materia
+          const matchMateria = linea.match(/^\[(.+)\]$/);
+          if(matchMateria){
+            materiaActual = matchMateria[1];
+            secciones[materiaActual] = [];
+          } else if(materiaActual){
+            // Buscar fecha dd/mm al final de la línea
+            const matchFecha = linea.match(/(\d{2})\/(\d{2})$/);
+            if(matchFecha){
+              const dia = parseInt(matchFecha[1],10);
+              const mes = parseInt(matchFecha[2],10);
+              secciones[materiaActual].push({ texto: linea, dia, mes });
+            } else {
+              secciones[materiaActual].push({ texto: linea, dia: 99, mes: 99 });
+            }
+          }
+        });
+
+        // Construir HTML con materias y fechas ordenadas
+        let html = "";
+        for(const materia in secciones){
+          const items = secciones[materia];
+          items.sort((a,b) => (a.mes - b.mes) || (a.dia - b.dia));
+          html += `<div class="materia"><h4>${materia}</h4><ul>`;
+          items.forEach(i => { html += `<li>${i.texto}</li>`; });
+          html += `</ul></div>`;
+        }
+        document.getElementById("fechas").innerHTML = html;
+      };
+      reader.readAsText(file);
+    });
+  </script>
+</body>
+</html>
