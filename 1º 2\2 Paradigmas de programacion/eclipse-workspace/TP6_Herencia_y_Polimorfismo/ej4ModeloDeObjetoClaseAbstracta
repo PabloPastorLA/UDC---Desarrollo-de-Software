@@ -1,0 +1,37 @@
+Ejercicio número 4
+Dado el siguiente modelo de objetos en la que la clase Envio es abstracta:
+
+
+
+
+
+
+
+
+
+
+
+Indique cuáles de las sentencias son incorrectas y especifique el motivo.
+	public static void main(String[] args) {
+		Envio [] envios = new Envio [20];
+		Encomienda encomienda =  new Contrareembolso();
+		CartaDocumento cartaDocumento = new CartaDocumento();
+		encomienda.getImporte();
+		envios[0] = new Encomienda();
+		envios[1] = new Carta();
+		envios[2] = new CartaDocumento();
+		envios[3] = new Telegrama();
+		envios[4] = new Contrareembolso();
+		envios[5] = cartaDocumento;
+		envios[6] = new Envio();
+		envios[5].calcularImpuesto();
+		cartaDocumento.calcularImpuesto();
+		Certificada certificada = cartaDocumento;
+		certificada.getFechaEntrega();
+		Imponible imponible = new Giro();
+		imponible.calcularImpuesto();
+		imponible.getImporte();		
+		envios[1].getDestinatario();
+		encomienda.getDestinatario();
+	}
+

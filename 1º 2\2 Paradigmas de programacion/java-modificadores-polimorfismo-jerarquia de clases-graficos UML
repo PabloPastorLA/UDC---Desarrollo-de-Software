@@ -1,0 +1,180 @@
+Caracteres útiles
+→
+--------------------------------------------------------------------------------------------------------------------------------------
+
+Modificadores
+¿Usa static?	Tipo de atributo						Modificadores posibles
+Sí (static)	De clase (uno solo, compartido por todos los objetos)		private, protected, public, default
+No (static)	De instancia (cada objeto tiene su copia)			private, protected, public, default
+
+
+✅ Entonces:
+
+static 				decide si es de clase o de instancia.
+private/protected/public 	deciden la visibilidad, de mas a menos estricto.
+
+final				define valor constante (por convencion los nombres de las ctes van en MAYUSCULA y espacios con un _ )
+				ej:	static public final AÑO_ACTUAL = 2025
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+
+OBJETOS: ES-UN vs TIENE-UN
+ES-UN (auto es un vehiculo) 		(es un tipo de otro) (se refleja con extends, osea superclase y subclase)
+TIENE-UN (vehiculo tiene un dueño) 	(tiene otro como parte de sí mismo.) (atributo dentro de la clase.)
+
+--------------------------------------------------------------------------------------------------------------------------------------
+INTERFACES:
+
+//definimos o declaramos la interface:
+
+public interface NombreDeLaInterface {
+    // métodos abstractos (solo firmas, sin cuerpo) (SI O SI Nombre, tipo de retorno, y lista de parametros (tipo de parametro y nombre en orden))
+    void metodo1();
+    int metodo2(String parametro);
+}
+
+
+
+
+//la clase "Implementa" la interface:
+
+public class Clase implements Interface{
+	@Override
+	public void metodoFirmadoEnInterface() {
+}
+
+
+
+@Override solo va en métodos que estás implementando o sobrescribiendo (de una interface o superclase).
+--------------------------------------------------------------------------------------------------------------------------------------
+
+@Override:
+Override = sobreescribir.
+
+Cuando por herencia una sub sobreescribe un metodo de una super, u otra sub o super sobreescribe el de la interface implementada
+se puede escribir en el renglon anterior @Override (la O con mayuscula). No es obligatorio pero recomendable porque sirve para
+que el compilador nos avise de posibles errores en el nombre del metodo a sobreescribir.
+--------------------------------------------------------------------------------------------------------------------------------------
+
+Qué es el tipo léxico?
+
+Tipo léxico (o estático, declarado):
+Es el tipo que vos escribís a la izquierda cuando declarás la variable.
+Se conoce en tiempo de compilación.
+Define qué métodos y atributos son accesibles sin casting.
+
+Tipo dinámico (o real):
+Es el tipo del objeto creado con new (a la derecha).
+Se conoce en tiempo de ejecución.
+Define qué implementación se ejecuta cuando un método está sobrescrito.
+
+	Ejemplo con tu jerarquía:
+
+	Encomienda encomienda = new Contrareembolso();
+
+	Tipo léxico: Encomienda
+	Tipo dinámico: Contrareembolso
+	
+--------------------------------------------------------------------------------------------------------------------------------------
+
+
+Los gráficos que muestran clases y flechas entre ellas se llaman diagramas de clases UML (Unified Modeling Language).
+Son parte de UML, un estándar visual para representar sistemas orientados a objetos.
+
+Las flechas suelen indicar herencia (generalización/especialización) o implementación de interfaces.
+
+📌 En UML:
+
+Una flecha con triángulo blanco apuntando hacia arriba indica herencia:
+
+Contrareembolso ─▷ Encomienda ─▷ Envio significa que Contrareembolso extends Encomienda, y Encomienda extends Envio.
+
+Una línea punteada con triángulo blanco significa implementación de interfaz.
+
+
+
+
+Mini-diagrama UML de tu caso:
+
+	┌─────────────────┐
+	│   Envio         │  <<abstract>>
+	└─────────────────┘
+		 ▲
+		 │
+	┌─────────────────┐
+	│  Encomienda     │
+	└─────────────────┘
+		 ▲
+		 │
+	┌─────────────────┐
+	│ Contrareembolso │
+	└─────────────────┘
+
+
+----------	otra info	------------
+https://catedu.github.io/poo-java/jerarqua_de_clases.html
+
+ 
+--------------------------------------------------------------------------------------------------------------------------------------
+
+Clase Abstracta:
+
+	Una clase abstracta es un molde incompleto.
+	No se puede instanciar.
+	Puede tener métodos abstractos y normales.
+	Sirve para generalizar y aprovechar herencia + polimorfismo.
+
+¿En una interfaz el método también puede ser abstracto?
+	Sí, todos los métodos en una interfaz son abstractos por defecto (a menos que sean default o static).
+	Por eso no se escribe abstract, es implícito.
+
+¿La clase abstracta puede tener atributos?
+	Sí. Una clase abstracta puede tener atributos, métodos concretos (con cuerpo), y métodos abstractos (sin cuerpo).
+
+¿Los métodos abstract deben ser sí o sí implementados en las subclases?
+	Exacto. La idea principal es esa: obligar a las subclases a dar su propia implementación.
+	Si no implementás el método, la subclase también debe ser abstracta.
+
+¿Una clase abstracta sí o sí debe tener una subclase?
+	En la práctica, sí (porque si no, nunca podrías instanciar nada de esa jerarquía).
+	Pero el compilador no te obliga a crear una subclase; simplemente, si no lo hacés, esa clase abstracta queda “inutilizable” por sí sola.
+
+¿No se puede instanciar porque posee métodos sin cuerpo?
+	Sí, esa es la razón fundamental. sería imposible ejecutar el llamado a un método abstracto sin cuerpo
+
+¿Si la clase posee un método abstracto, debe ser sí o sí abstracta? Correcto.
+	abstract class Envio {
+	    abstract double calcularImpuesto();
+
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+Clase abstracta vs Interfaz
+
+Característica	Clase abstracta								Interfaz
+Instanciación	❌ No se puede instanciar						❌ No se puede instanciar
+Atributos		✅ Puede tener atrib (variables de instancia, normales)	⚠️ Solo constantes
+Métods abstractos	✅ Puede tener métodos abstractos					✅ Son abstractos por defecto
+Métods con cuerpo	✅ Sí, puede tener métodos con cuerpo				✅ Puede tener default y static con código
+Constructores	✅ Puede tener (pero no se instancian directamente)		❌ No puede tener constructores
+Herencia		Una clase solo extiende 1 clase abs. (herencia simple)	Una clase puede implementar muchas interfaces (herencia múltiple)
+Uso típico		Cuando querés un molde común con atrib y metodos		Para definir un contrato que varias clases distintas deben cumplir
+
+
+✅ Resumiendo:
+
+Usás clase abstracta cuando tenés un concepto general que comparte atributos y algunos métodos comunes.
+Usás interfaz cuando querés un contrato (cierta obligacion de comportamiento) sin importar atributos ni herencia.
+--------------------------------------------------------------------------------------------------------------------------------------
+
+En Java un método static no puede ser abstract.
+Razón: un método abstract no tiene cuerpo y debe implementarse en una subclase.
+
+Un método static pertenece a la interfaz o clase misma, no a ninguna instancia ni subclase, así que no tiene sentido dejarlo sin implementación.
+
+
+abstract = sin cuerpo → necesita implementación en subclase”
+“static = pertenece a la interfaz/clase → ya tiene cuerpo, no necesita implementación”
+
+
