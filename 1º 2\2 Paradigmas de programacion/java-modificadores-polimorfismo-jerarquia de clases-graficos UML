@@ -3,9 +3,9 @@ Caracteres útiles
 --------------------------------------------------------------------------------------------------------------------------------------
 
 Modificadores
-¿Usa static?	Tipo de atributo						Modificadores posibles
-Sí (static)	De clase (uno solo, compartido por todos los objetos)		private, protected, public, default
-No (static)	De instancia (cada objeto tiene su copia)			private, protected, public, default
+¿Usa static?	Tipo de atributo								Modificadores posibles
+Sí (static)		De clase (uno solo, compartido por todos los objetos)		private, protected, public, default
+No (static)		De instancia (cada objeto tiene su copia)				private, protected, public, default
 
 
 ✅ Entonces:
@@ -18,14 +18,13 @@ final				define valor constante (por convencion los nombres de las ctes van en M
 
 --------------------------------------------------------------------------------------------------------------------------------------
 
-
 OBJETOS: ES-UN vs TIENE-UN
 ES-UN (auto es un vehiculo) 		(es un tipo de otro) (se refleja con extends, osea superclase y subclase)
 TIENE-UN (vehiculo tiene un dueño) 	(tiene otro como parte de sí mismo.) (atributo dentro de la clase.)
 
 --------------------------------------------------------------------------------------------------------------------------------------
 INTERFACES:
-
+es un contrato, una "obligacion" de implementacion.
 //definimos o declaramos la interface:
 
 public interface NombreDeLaInterface {
@@ -176,5 +175,226 @@ Un método static pertenece a la interfaz o clase misma, no a ninguna instancia 
 
 abstract = sin cuerpo → necesita implementación en subclase”
 “static = pertenece a la interfaz/clase → ya tiene cuerpo, no necesita implementación”
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+
+En Java, el polimorfismo está diseñado para los métodos de instancia, no para los atributos.
+
+Métodos de instancia	✅ Sí	Tiempo de ejecución (runtime, tipo dinámico del objeto)
+Atributos			❌ No	Tiempo de compilación (compile-time, tipo léxico de la variable)
+Métodos estáticos		❌ No	Compile-time, por la clase a la que se llame
+
+
+
+
+con estas clases:
+	----
+class Animal {
+    void sonido() { System.out.println("Sonido genérico"); }
+}
+
+class Perro extends Animal {
+    @Override
+    void sonido() { System.out.println("Guau"); }
+}
+	----
+
+cuando hacemos esto:
+	----
+Animal a = new Perro();
+a.sonido(); // 👉 "Guau" (se ejecuta el de Perro)
+	----
+sale guau, no sale sonido generico
+
+	
+--------------------------------------------------------------------------------------------------------------------------------------
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+🔹 1. Clase variable = new Clase(); ✅ (lo más simple)
+
+Esto es lo normal y directo:
+
+La variable es del mismo tipo que el objeto que instanciás.
+
+Podés usar todos los atributos y métodos de la clase.
+
+Ejemplo:
+	----
+Perro p = new Perro();
+p.ladrar();  // ✅ se puede
+	----
+👉 Nada de polimorfismo acá, solo instanciación directa.
+
+🔹 2. Subclase variable = new Subclase(); ✅
+
+Esto también es muy simple:
+
+La variable es de tipo subclase, y el objeto también.
+
+Acceso completo a todo lo que tenga la subclase (incluyendo lo heredado de la superclase).
+
+Ejemplo:
+
+
+class Animal { void mover() {} }
+class Perro extends Animal { void ladrar() {} }
+
+Perro p = new Perro();
+p.ladrar(); // ✅ propio de Perro
+p.mover();  // ✅ heredado de Animal
+
+
+👉 Igual que el caso anterior, pero con herencia de por medio.
+
+🔹 3. Superclase variable = new Superclase(); ✅
+
+Ahora con herencia:
+
+La variable es de tipo superclase y el objeto también.
+
+Solo podés acceder a lo definido en la superclase.
+
+Si la superclase es abstracta → ❌ no podés instanciarla.
+
+Ejemplo:
+
+
+Animal a = new Animal();
+a.mover(); // ✅
+a.ladrar(); // ❌ no existe en Animal
+
+👉 Directo, pero ojo: si Animal es abstracta, esto no se puede.
+
+🔹 4. Superclase variable = new Subclase(); ✅ (el más interesante: polimorfismo)
+
+Este es el patrón típico de polimorfismo en Java:
+
+La variable es del tipo superclase.
+
+El objeto real es de tipo subclase.
+
+Podés solo acceder a lo definido en la superclase, PERO si un método fue sobrescrito, se ejecuta el de la subclase real.
+
+Ejemplo:
+
+Animal a = new Perro();
+a.mover();   // ✅ método de Animal, pero si Perro lo sobrescribe se ejecuta el de Perro
+// a.ladrar(); // ❌ no compila, porque "ladrar" no existe en Animal
+
+
+👉 Acá está la potencia: podés manejar distintos tipos de subclases con una sola referencia de superclase.
+
+🔹 Resumen en orden de simple a complejo
+
+Clase variable = new Clase();
+→ instanciación directa, acceso completo.
+
+Subclase variable = new Subclase();
+→ igual que arriba, con herencia incluida.
+
+Superclase variable = new Superclase();
+→ válido salvo que la superclase sea abstracta.
+
+Superclase variable = new Subclase();
+→ polimorfismo: referencia de superclase, objeto real de subclase.
+
+👉 ¿Querés que te arme un ejemplo con código donde aparezcan los 4 casos juntos, para ver lado a lado cómo compilan y qué se puede hacer en cada uno?
+
+
+class Animal {
+    void mover() {
+        System.out.println("El animal se mueve");
+    }
+}
+
+class Perro extends Animal {
+    @Override
+    void mover() {
+        System.out.println("El perro corre");
+    }
+
+    void ladrar() {
+        System.out.println("¡Guau!");
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        
+        // 1) Clase = Clase (directo)
+        Animal a1 = new Animal();
+        a1.mover(); // "El animal se mueve"
+        // a1.ladrar(); ❌ ERROR, no existe en Animal
+        
+        // 2) Subclase = Subclase
+        Perro p1 = new Perro();
+        p1.mover();  // "El perro corre" (override)
+        p1.ladrar(); // "¡Guau!" (propio de Perro)
+        
+        // 3) Superclase = Superclase
+        Animal a2 = new Animal();
+        a2.mover(); // "El animal se mueve"
+        // a2.ladrar(); ❌ no existe en Animal
+        
+        // 4) Superclase = Subclase (polimorfismo)
+        Animal a3 = new Perro();
+        a3.mover();  // "El perro corre" (se ejecuta el de Perro)
+        // a3.ladrar(); ❌ no compila (no está en Animal)
+        
+        // Si quiero ladrar desde a3, necesito casting:
+        ((Perro)a3).ladrar(); // "¡Guau!"
+    }
+}
+
+
+
+
+🔹 Explicación rápida de cada caso
+
+Clase = Clase
+
+Instanciación directa.
+
+Nada raro, acceso total a lo que define la clase.
+
+Subclase = Subclase
+
+Lo más flexible: acceso a métodos heredados y propios.
+
+Superclase = Superclase
+
+Solo acceso a lo de la superclase.
+
+Nada polimórfico.
+
+Superclase = Subclase (polimorfismo)
+
+La variable solo “ve” lo de la superclase.
+
+Pero si un método está sobrescrito, en ejecución corre la versión de la subclase.
+
+💡 Regla de oro:
+
+Atributos y métodos estáticos → se resuelven por el tipo de la variable (léxico).
+
+Métodos de instancia sobrescritos → se resuelven por el tipo real del objeto (dinámico).
+
 
 
