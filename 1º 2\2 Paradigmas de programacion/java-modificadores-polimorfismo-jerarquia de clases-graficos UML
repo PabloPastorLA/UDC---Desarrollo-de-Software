@@ -230,9 +230,7 @@ sale guau, no sale sonido generico
 🔹 1. Clase variable = new Clase(); ✅ (lo más simple)
 
 Esto es lo normal y directo:
-
 La variable es del mismo tipo que el objeto que instanciás.
-
 Podés usar todos los atributos y métodos de la clase.
 
 Ejemplo:
@@ -242,12 +240,11 @@ p.ladrar();  // ✅ se puede
 	----
 👉 Nada de polimorfismo acá, solo instanciación directa.
 
+
 🔹 2. Subclase variable = new Subclase(); ✅
 
 Esto también es muy simple:
-
 La variable es de tipo subclase, y el objeto también.
-
 Acceso completo a todo lo que tenga la subclase (incluyendo lo heredado de la superclase).
 
 Ejemplo:
@@ -263,12 +260,11 @@ p.mover();  // ✅ heredado de Animal
 
 👉 Igual que el caso anterior, pero con herencia de por medio.
 
-🔹 3. Superclase variable = new Superclase(); ✅
 
+🔹 3. Superclase variable = new Superclase(); ✅
 Ahora con herencia:
 
 La variable es de tipo superclase y el objeto también.
-
 Solo podés acceder a lo definido en la superclase.
 
 Si la superclase es abstracta → ❌ no podés instanciarla.
@@ -281,6 +277,7 @@ a.mover(); // ✅
 a.ladrar(); // ❌ no existe en Animal
 
 👉 Directo, pero ojo: si Animal es abstracta, esto no se puede.
+
 
 🔹 4. Superclase variable = new Subclase(); ✅ (el más interesante: polimorfismo)
 

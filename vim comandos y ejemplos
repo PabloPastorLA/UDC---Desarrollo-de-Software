@@ -1,0 +1,33 @@
+mostrar nro linea
+:set nu
+:set nu!
+
+
+cortar linea: nos paramos en la linea y dd
+copiar linea: nos paramos en la linea y yy
+pegar linea: nos paramos arriba de la linea y p
+
+cortar n lineas: nos paramos en la linea y dnd ejemplo: d2d
+copiar n lineas: nos paramos en la linea y ydy ejemplo: y2y
+
+undo: u (solo u)
+redo: ctrl + r
+
+
+
+shift + arriba o abajo nos desplazamos
+deplazarse al principio gg
+desplazarse al final shift + g
+
+
+buscar:
+/<texto>  ej /cor
+al buscar, next con n, previous con shift + n
+
+
+comentar varias lineas insertando un caracter al principio
+
+	Para comentar varias líneas en Vim, ingresa al modo de selección visual en bloque presionando Ctrl + v. Luego, usa las flechas para 				
+	seleccionar las líneas deseadas. Después, presiona Shift + i para entrar al modo de inserción, escribe tu carácter de comentario (como # 
+	o //) y presiona Esc para aplicarlo a todas las líneas seleccionadas. 
+
