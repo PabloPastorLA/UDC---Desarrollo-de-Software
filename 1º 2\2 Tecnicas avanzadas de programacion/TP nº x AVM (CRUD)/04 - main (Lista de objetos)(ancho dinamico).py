@@ -12,6 +12,47 @@ import re
 from tabulate import tabulate
 
 
+
+
+
+
+def main():
+    
+    # Crea lista y muestra la pantalla por unica vez
+    lista = []
+    # edad = []
+    # dni = []
+    # telefono = []
+    pantallaBienvenida()
+
+    # Loopea hasta la condicion de salir
+    
+    loopear= True
+    while loopear:
+        limpiarPantallla()
+        pantallaOpciones()
+        entrada=lecturaOpcion()
+        if entrada == 1:create(lista)    #crea/agrega  
+        if entrada ==2:read(lista)      #lee
+        if entrada ==3: update(lista)   #muestra
+        if entrada ==4: delete(lista)   #borra
+        if entrada ==9: loopear = salir()
+
+            # limpiarPantallla()
+            # print("Saliendo.")
+            # time.sleep(1)
+            # print("Saliendo..")
+            # time.sleep(1)
+            # print("Saliendo...")
+            # time.sleep(1)
+            # limpiarPantallla()
+            # loopear=False
+
+
+
+
+
+
 class Registro:
     def __init__(self, apellidoNombre, edad, dni, tel):
         self.apellidoNombre = apellidoNombre
@@ -205,50 +246,74 @@ def read(lista):
 def printdinamico(cabecera, lista):
     ancho = []
     for i in range(len(cabecera)):
-       # if ancho < len(cabecera[i]): ancho = len(cabecera[i])
+        # asigno a la lista ancho el ancho horizontal de cada campo
         ancho.append(len(cabecera[i]))
-#        print("ancho:         -----------      :" + str(ancho))
+
     for i in range(len(lista)):
+        #recorro los datos de la lista y almaceno el ancho del mayor
         if ancho[0] < len(lista[i].apellidoNombre): ancho[0] = len(lista[i].apellidoNombre)
         if ancho[1] < len(str(lista[i].edad)): ancho[1] = len(str(lista[i].edad))
         if ancho[2] < len(str(lista[i].dni)): ancho[2] = len(str(lista[i].dni))
         if ancho[3] < len(str(lista[i].tel)): ancho[3] = len(str(lista[i].tel))
-    #    print("ancho:         -----------      :" + str(ancho))
 
     anchototal=0
     for i in range(len(ancho)):
+        #sumo el total del ancho, para operar despues
         anchototal += ancho[i]
-        print("ancho:         -----------      :" + str(ancho[i]))
 
+    #imprimo linea, cabecera y linea
+    printlinea("-", anchototal + len(cabecera))
 
-    printlinea("-", anchototal)
-    espizq = espder = texto = []
+                # printcontenido(lista)
+    espizq = []
+    espder = []
+    texto = []
     for i in range(len(ancho)):
-        print ("i: " + str(i))
-        # espizq[i] = (ancho[i]-len(cabecera[i]))//2
-        # espder[i] = (ancho[i]-len(cabecera[i]))//2
-        # texto[i] = (espizq[i]*" "  +  cabecera[i])  +  espder[i]*" "
         espizq.append((ancho[i]-len(cabecera[i]))//2)
-        espder.append((ancho[i]-len(cabecera[i]))//2)
-        print ("ancho[i]: " + str(ancho[i]))
-        print ("cabecera[i]: " + str(cabecera[i]))
-        print ("len(cabecera[i]): " + str(len(cabecera[i])))
-        print ("espizq: " + str(espizq[0]))
-        print ("espder: " + str(espder[0]))
-
+        espder.append((ancho[i]-len(cabecera[i]))//2 + (ancho[i]-len(cabecera[i]))%2)
         texto.append(      (espizq[i]*" "  +  cabecera[i])  +  espder[i]*" "       )
-        print(texto)
-
-    print (texto[0]+"|")
-    print (texto[1]+"|")
-    print (texto[2]+"|")
-    print (texto[3]+"|")
-
-
     print (texto[0]+"|"+texto[1]+"|"+texto[2]+"|"+texto[3])
+    printlinea("-", anchototal + len(cabecera))
 
 
 
+
+
+
+# imprimo lista
+
+    espizq = []
+    espder = []
+    texto = []
+    
+    #for i in range(len(lista)):
+    for item in lista:
+        #recorro los datos de la lista y almaceno el ancho del mayor
+        espizq = []
+        espder = []
+        texto = []
+
+        espizq.append(    (ancho[0]-len(item.apellidoNombre))   //2     ) 
+        espder.append(    (ancho[0]-len(item.apellidoNombre))   //2   +   ((ancho[0]-len(item.apellidoNombre))   %2)     ) 
+        texto.append(      espizq[0]*" "  +  item.apellidoNombre  +  espder[0]*" "       )
+        espizq.append(    (ancho[1]-len(str(item.edad)))   //2     ) 
+        espder.append(    (ancho[1]-len(str(item.edad)))   //2    +  (ancho[1]-len(str(item.edad)))  %2  )  
+        texto.append(      espizq[1]*" "  +  str(item.edad)  +  espder[1]*" "       )
+        espizq.append(    (ancho[2]-len(str(item.dni)))   //2     ) 
+        espder.append(    (ancho[2]-len(str(item.dni)))   //2    +  (ancho[2]-len(str(item.dni)))  %2  )  
+        texto.append(      espizq[2]*" "  +  str(item.dni)  +  espder[2]*" "       )
+        espizq.append(    (ancho[3]-len(str(item.tel)))   //2     ) 
+        espder.append(    (ancho[3]-len(str(item.tel)))   //2    +  (ancho[3]-len(str(item.tel)))  %2  )  
+        texto.append(      espizq[3]*" "  +  str(item.tel)  +  espder[3]*" "       )
+        print (texto[0]+"|"+texto[1]+"|"+texto[2]+"|"+texto[3])
+
+
+    printlinea("-", anchototal + len(cabecera))
+
+
+
+def printcontenido(lista):
+    pass
 
 
 def printlinea(caracter, ancho):
@@ -259,10 +324,10 @@ def update(lista):
     if len(lista)==0:
         print("No hay datos cargados")
     else:
-        print("Contenido:\n-----------")
+        # print("Contenido:\n-----------")
 
 
-        cabecera = ["Apellido - Nombre", "Edad", "DNI", "Telefono"]
+        cabecera = ["nom", "Edad", "DNI", "Tel"]
         
         printdinamico(cabecera, lista)
         # print("    Nombre:    |     Edad:     |      dni:     |      tel:     |\n")
@@ -298,7 +363,6 @@ def update(lista):
             # print(lista[i]["apellidoNombre"])
             
         #    print(lista[i]["apellidoNombre"] + " | " + str(lista[i]["edad"]) + " | " + str(lista[i]["dni"]) + " | " + str(lista[i]["tel"]) + "\n")
-        print("-----------")
     esperarEntrada()
 
 def delete(lista):
@@ -329,38 +393,6 @@ def delete(lista):
         #     print("ERROR: no se encuentra: " + inp)
     print("No encontrado...")
     esperarEntrada()
-
-def main():
-    
-    # Crea lista y muestra la pantalla por unica vez
-    lista = []
-    # edad = []
-    # dni = []
-    # telefono = []
-    pantallaBienvenida()
-
-    # Loopea hasta la condicion de salir
-    
-    loopear= True
-    while loopear:
-        limpiarPantallla()
-        pantallaOpciones()
-        entrada=lecturaOpcion()
-        if entrada == 1:create(lista)    #crea/agrega  
-        if entrada ==2:read(lista)      #lee
-        if entrada ==3: update(lista)   #muestra
-        if entrada ==4: delete(lista)   #borra
-        if entrada ==9: loopear = salir()
-
-            # limpiarPantallla()
-            # print("Saliendo.")
-            # time.sleep(1)
-            # print("Saliendo..")
-            # time.sleep(1)
-            # print("Saliendo...")
-            # time.sleep(1)
-            # limpiarPantallla()
-            # loopear=False
 
 
 main()
